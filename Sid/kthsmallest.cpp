@@ -1,4 +1,4 @@
-#include "Num.h"
+#include "kthsmallest.h"
 #define INT_MAX 65535
 
 //kthSmallest::kthSmallest(int n): kthSmallest(n) {}

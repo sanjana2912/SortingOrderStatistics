@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Num.h"
+#include "kthsmallest.h"
 
 using namespace std;
 
