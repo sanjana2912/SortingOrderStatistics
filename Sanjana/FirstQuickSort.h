@@ -11,8 +11,7 @@
 
 class FirstQuickSort {
     public:
-    //static int partition(int arr[], int low, int high);
-    static int partition1(int arr[], int low, int high);
+    static int partition1(int arr[], int first, int last);
 
 };
 

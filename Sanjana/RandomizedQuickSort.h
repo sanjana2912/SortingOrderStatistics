@@ -15,6 +15,7 @@ class RandomizedQuickSort {
 public:
     static int partition_r(int arr[], int low, int high);
     static int partition(int arr[], int low, int high);
+    static void swap(int* a, int* b);
     //void quickSort(int arr[], int low, int high);
 
 
