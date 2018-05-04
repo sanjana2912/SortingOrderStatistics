@@ -1,12 +1,10 @@
 #include <iostream>
-#include<ctime>
+#include "optimizedquicksort.h"
+
 using namespace std;
 
 // Number of elements to be sorted
 #define N 1000000
-
-// Number of sorting runs
-#define NUM 10
 
 // perform insertion sort on arr[]
 void insertionSort(int arr[], int low, int n)
@@ -75,69 +73,28 @@ void QuickSort(int a[], int low, int high)
     QuickSort(a, pivot + 1, high);
 }
 
-void optimizedQuickSort(int A[], int low, int high)
+void optimizedQuickSort::calcOptimizedQuickSort(int arr[], int low, int high, int NUM)
 {
     while (low < high) 
     {
         // do insertion sort if 10 or smaller
         if(high - low < NUM)
         {
-            insertionSort(A, low, high);
+            insertionSort(arr, low, high);
             break;
         }
         else 
         {
-            int pivot = Partition(A, low, high);
+            int pivot = Partition(arr, low, high);
             
             // tail call optimizations - recurse on smaller sub-array
             if (pivot - low < high - pivot) {
-                optimizedQuickSort(A, low, pivot - 1);
+                optimizedQuickSort::calcOptimizedQuickSort(arr, low, pivot-1, NUM);
                 low = pivot + 1;
             } else {
-                optimizedQuickSort(A, pivot + 1, high);
+                optimizedQuickSort::calcOptimizedQuickSort(arr, pivot+1, high, NUM);
                 high = pivot - 1;
             }
         }
     }    
-}
-
-int main()
-{
-    int arr[N], dup[N];
-    
-    // seed for random input
-    srand(time(NULL));
- 
-    // to measure time taken by optimized and non-optimized Quicksort 
-    clock_t begin, end;
-    double t1 = 0.0, t2 = 0.0;
-    
-    // perform Quicksort NUM times and take average
-    for(int i = 0; i < NUM; i++)
-    {
-        // generate random input
-        for (int i = 0; i < N; i++)
-            dup[i] = arr[i] = rand() % 100000;
-
-        // Perform non-optimized Quicksort on arr
-        begin = clock();
-        QuickSort(arr, 0, N-1);
-        end = clock();
-
-        // calculate time taken by Non-Optimized QuickSort
-        t1 += (double)(end - begin) / CLOCKS_PER_SEC;
-        
-        // Perform Optimized Quicksort on dup[]
-        begin = clock();
-        optimizedQuickSort(dup, 0, N-1);
-        end = clock();
-
-        // calculate time taken by optimized QuickSort
-        t2 += (double)(end - begin) / CLOCKS_PER_SEC;
-    }
-
-    cout << "Average time taken by Non-Optimized Quicksort: " << t1/NUM;
-    cout << "\nAverage time taken by Optimized Quicksort: " << t2/NUM;
-
-    return 0;
 }

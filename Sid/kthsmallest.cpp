@@ -3,10 +3,10 @@
 
 //kthSmallest::kthSmallest(int n): kthSmallest(n) {}
 
-int kthSmallest::getkthSmallest()
-{
-  return n;
-}
+// int kthSmallest::getkthSmallest()
+// {
+//   return n;
+// }
 
 int partition(int arr[], int l, int r);
  
