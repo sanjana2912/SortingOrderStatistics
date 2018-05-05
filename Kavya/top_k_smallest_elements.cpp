@@ -2,8 +2,7 @@
 // Created by kavya on 4/22/2018.
 //
 
-#include <iostream>
-using namespace std;
+#include "TopKSmallest.h"
 
 // this function swaps two elements in the array[]
 // i and j being the position of the
@@ -11,9 +10,9 @@ using namespace std;
 // array[] : the array
 // i : the position of one element
 // j : the position of second element to be swapped with element at i
-void swap(float array[], int i, int j)
+void TopKSmallest::swap(float array[], int i, int j)
 {
-    int temp = array[i];
+    float temp = array[i];
     array[i] = array[j];
     array[j] = temp;
 }
@@ -23,7 +22,7 @@ void swap(float array[], int i, int j)
 // array[] : the array
 // i : the position of the element
 // n : size of the array[]
-void max_heapify(float array[], int i, int n)
+void TopKSmallest::max_heapify(float array[], int i, int n)
 {
     // setting the left and right child of an element
     int left = 2*i+1;
@@ -42,7 +41,7 @@ void max_heapify(float array[], int i, int n)
     }
     // if largest is not equal to i, then swap the largest with i and perform heapify
     if(largest != i){
-        swap(array, i, largest);
+        TopKSmallest::swap(array, i, largest);
         max_heapify(array, largest, n);
     }
 }
@@ -50,23 +49,32 @@ void max_heapify(float array[], int i, int n)
 // this function prints the array elements from 0 to nth position
 // array[] : the array
 // n : size of the array[]
-void print(float array[], int n)
+void TopKSmallest::print_and_write(float array[], int n)
 {
-    for (int i = 0; i < n; i++)
-        cout << array[i] << " ";
-    cout << "\n";
+    ofstream file2;
+    string timestamp = GenerateInput::get_date();
+    string path = GenerateInput::GetCurrentWorkingDir();
+    path +="\\output\\";
+    file2.open(path+"top_k_elements_"+timestamp+".txt");
+    cout <<"\n";
+    for (int i = 0; i < n; i++) {
+        file2 << array[i] << "\n";
+        cout <<"\t" <<array[i];
+    }
+    cout << "\nOutput was written to file!!\n";
+    file2.close();
 }
-
 
 // this function finds the top k elements in the array[]
 // array[] : size of the array[]
 // n : size of the array[]
 // k : number of top elements
-void top_k_smallest_elements(float array[], int n, int k)
+double TopKSmallest::top_k_smallest_elements(float array[], int n, int k)
 {
     int i;
     float temp_array[k];
     // add the first k elements from array[] to temp_array[]
+    auto start = get_time::now();
     for( i = 0; i < k; i++) {
         temp_array[i] = array[i];
     }
@@ -85,5 +93,12 @@ void top_k_smallest_elements(float array[], int n, int k)
         }
     }
     // print the top k elements
-    print(temp_array, k);
+    auto end = get_time::now();
+    auto diff = end - start;
+    double time = chrono::duration_cast<chrono::nanoseconds>(diff).count();
+    float runtime = time/1000000;
+    cout<<"\nElapsed time is :  "<< runtime <<" ms "<<endl;
+    GenerateInput::write_runtime_to_file(n, runtime, "top_k_elements");
+    print_and_write(temp_array, k);
+    return runtime;
 }
